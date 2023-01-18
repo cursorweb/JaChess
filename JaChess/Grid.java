@@ -1,3 +1,5 @@
+package JaChess;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,6 +13,8 @@ public class Grid extends JPanel {
 
         makePieces(Piece.Side.White);
         makePieces(Piece.Side.Black);
+
+        Piece.setGrid(this);
     }
 
     private void makeGrid() {
