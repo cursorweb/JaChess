@@ -1,5 +1,7 @@
 package JaChess;
 
+import JaChess.Piece.BasePiece;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,13 +12,13 @@ public class Main {
     private static final JPanel panel = new JPanel();
     private static final Grid grid = new Grid();
 
-    private static Piece.Side turn = Piece.Side.White;
+    private static BasePiece.Side turn = BasePiece.Side.White;
 
     public static void changeTurn() {
-        if (turn == Piece.Side.White) {
-            turn = Piece.Side.Black;
+        if (turn == BasePiece.Side.White) {
+            turn = BasePiece.Side.Black;
         } else {
-            turn = Piece.Side.White;
+            turn = BasePiece.Side.White;
         }
     }
 

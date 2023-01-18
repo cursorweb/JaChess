@@ -1,4 +1,7 @@
-package JaChess;
+package JaChess.Piece;
+
+import JaChess.Cell;
+import JaChess.Grid;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -6,15 +9,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-public class Piece {
+public abstract class BasePiece {
+    /** CONFIG */
     private static final int SIZE = (int) (Cell.SIZE * 0.8);
     private static final int OFFSET = (Cell.SIZE - SIZE) / 2;
     private static final double BORDER = 0.9;
     private static final Color WHITE = new Color(232, 241, 248);
 
-    private static Grid grid = null;
+    protected static Grid grid = null;
     public static void setGrid(Grid grid) {
-        Piece.grid = grid;
+        BasePiece.grid = grid;
     }
 
     public enum Type {
@@ -43,15 +47,14 @@ public class Piece {
     }
 
     private final Type type;
-    private final Side side;
+    protected final Side side;
 
-    private boolean doubleMove = true;
-
-    public Piece(Type type, Side side) {
+    protected BasePiece(Type type, Side side) {
         this.type = type;
         this.side = side;
     }
 
+    /** RENDER */
     public void draw(Graphics2D g) {
         try {
             BufferedImage image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Sprites/" + type + ".png")));
@@ -87,77 +90,14 @@ public class Piece {
         g.setTransform(transform);
     }
 
+    /** VIEW MOVES + UTIL */
     public void showMoves(int x, int y) {
-        grid.clearCircles();
-
-        if (side == Side.White) {
-            showMovesWhite(x, y);
-        }
-
-        grid.repaint();
+        showPieceMoves(x, y);
     }
 
-    private void showMovesWhite(int x, int y) {
-        switch (type) {
-            case Pawn:
-                if (grid.getPiece(x, y - 1) == null) {
-                    grid.getCell(x, y - 1).setCircle(true);
-                }
+    protected abstract void showPieceMoves(int x, int y);
 
-                if (doubleMove && grid.getPiece(x, y - 2) == null) {
-                    grid.getCell(x, y - 2).setCircle(true);
-                }
-                break;
-
-            case Rook:
-                for (int pieceY = y; pieceY < 8; pieceY++) {
-                    if (noMove(x, pieceY)) {
-                        break;
-                    }
-                }
-
-                for (int pieceY = y; pieceY >= 0; pieceY--) {
-                    if (noMove(x, pieceY)) {
-                        break;
-                    }
-                }
-
-                for (int pieceX = x; pieceX < 8; pieceX++) {
-                    if (noMove(pieceX, y)) {
-                        break;
-                    }
-                }
-
-                for (int pieceX = x; pieceX >= 0; pieceX--) {
-                    if (noMove(pieceX, y)) {
-                        break;
-                    }
-                }
-                break;
-
-            case Bishop: {
-                loop:
-                for (int pieceY = y; pieceY >= 0; pieceY--) {
-                    for (int pieceX = x; pieceX >= 0; pieceX--) {
-                        if (noMove(pieceX, pieceY)) {
-                            break loop;
-                        }
-                    }
-                }
-
-                loop:
-                for (int pieceY = y; pieceY < 8; pieceY++) {
-                    for (int pieceX = x; pieceX >= 0; pieceX--) {
-                        if (noMove(pieceX, pieceY)) {
-                            break loop;
-                        }
-                    }
-                }
-            } break;
-        }
-    }
-
-    private boolean noMove(int x, int y) {
+    protected boolean noMove(int x, int y) {
         if (grid.getPiece(x, y) != null) {
             return true;
         }
@@ -166,4 +106,7 @@ public class Piece {
 
         return false;
     }
+
+    /** MOVED */
+    protected void pieceMoved() {}
 }

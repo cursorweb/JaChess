@@ -1,5 +1,7 @@
 package JaChess;
 
+import JaChess.Piece.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,10 +13,10 @@ public class Grid extends JPanel {
 
         makeGrid();
 
-        makePieces(Piece.Side.White);
-        makePieces(Piece.Side.Black);
+        makePieces(BasePiece.Side.White);
+        makePieces(BasePiece.Side.Black);
 
-        Piece.setGrid(this);
+        BasePiece.setGrid(this);
     }
 
     private void makeGrid() {
@@ -34,40 +36,38 @@ public class Grid extends JPanel {
         }
     }
 
-    private void makePieces(Piece.Side side) {
-        int pawnY, line;
+    private void makePieces(BasePiece.Side side) {
+        int pawnY, pieceY;
 
-        if (side == Piece.Side.Black) {
+        if (side == BasePiece.Side.Black) {
             pawnY = 1;
-            line = -1;
+            pieceY = 0;
         } else {
             pawnY = 6;
-            line = 1;
+            pieceY = 7;
         }
-
-        Piece.Type[] order = { Piece.Type.Rook, Piece.Type.Knight, Piece.Type.Bishop };
 
         for (int x = 0; x < 8; x++) {
-            getCell(x, pawnY).setPiece(new Piece(Piece.Type.Pawn, side));
+            getCell(x, pawnY).setPiece(new Pawn(side));
         }
 
-        for (int x = 0; x < 3; x++) {
-            getCell(x, pawnY + line).setPiece(new Piece(order[x], side));
-        }
+        getCell(0, pieceY).setPiece(new Rook(side));
+        getCell(1, pieceY).setPiece(new Knight(side));
+        getCell(2, pieceY).setPiece(new Bishop(side));
 
-        getCell(3, pawnY + line).setPiece(new Piece(Piece.Type.Queen, side));
-        getCell(4, pawnY + line).setPiece(new Piece(Piece.Type.King, side));
+        getCell(3, pieceY).setPiece(new Queen(side));
+        getCell(4, pieceY).setPiece(new King(side));
 
-        for (int x = 5; x < 8; x++) {
-            getCell(x, pawnY + line).setPiece(new Piece(order[2 - (x - 5)], side));
-        }
+        getCell(5, pieceY).setPiece(new Bishop(side));
+        getCell(6, pieceY).setPiece(new Knight(side));
+        getCell(7, pieceY).setPiece(new Rook(side));
     }
 
     public Cell getCell(int x, int y) {
         return grid[y][x];
     }
 
-    public Piece getPiece(int x, int y) {
+    public BasePiece getPiece(int x, int y) {
         return getCell(x, y).getPiece();
     }
 }

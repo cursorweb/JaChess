@@ -1,5 +1,7 @@
 package JaChess;
 
+import JaChess.Piece.BasePiece;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -16,7 +18,7 @@ public class Cell extends JComponent {
 
 
     /** Locational */
-    private Piece piece;
+    private BasePiece piece;
     private final int x;
     private final int y;
 
@@ -59,11 +61,11 @@ public class Cell extends JComponent {
         }
     }
 
-    public void setPiece(Piece piece) {
+    public void setPiece(BasePiece piece) {
         this.piece = piece;
     }
 
-    public Piece getPiece() {
+    public BasePiece getPiece() {
         return piece;
     }
 
