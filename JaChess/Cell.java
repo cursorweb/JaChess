@@ -107,9 +107,9 @@ public class Cell extends JComponent {
         public void mousePressed(MouseEvent e) {
             if (piece == null) {
                 if (selectedCell != null) {
-                    clear();
-
                     piece = selectedCell.getPiece();
+
+                    clear();
                     selectedCell.setPiece(null);
                     selectedPiece = null;
 
