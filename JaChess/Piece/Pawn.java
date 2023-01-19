@@ -21,6 +21,16 @@ public class Pawn extends BasePiece {
             if (doubleMove && grid.getPiece(x, y - 2) == null) {
                 grid.getCell(x, y - 2).setSelectedCell(val);
             }
+        } else {
+            int x = cell.cellX(), y = cell.cellY();
+
+            if (grid.getPiece(x, y + 1) == null) {
+                grid.getCell(x, y + 1).setSelectedCell(val);
+            }
+
+            if (doubleMove && grid.getPiece(x, y + 2) == null) {
+                grid.getCell(x, y + 2).setSelectedCell(val);
+            }
         }
     }
 

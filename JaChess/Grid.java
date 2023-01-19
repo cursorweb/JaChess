@@ -56,10 +56,20 @@ public class Grid extends JPanel {
     }
 
     public Cell getCell(int x, int y) {
+        if (y < 0 || y > 7 || x < 0 || x > 7) {
+            return null;
+        }
+
         return grid[y][x];
     }
 
     public BasePiece getPiece(int x, int y) {
-        return getCell(x, y).getPiece();
+        Cell cell = getCell(x, y);
+
+        if (cell == null) {
+            return null;
+        }
+
+        return cell.getPiece();
     }
 }

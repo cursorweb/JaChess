@@ -104,14 +104,18 @@ public abstract class BasePiece {
 
     protected abstract void changePieces(Cell cell, Cell val);
 
-    protected boolean noMove(Cell cell) {
-        int x = cell.cellX(), y = cell.cellY();
-
+    protected boolean noMove(int x, int y, Cell val) {
         if (grid.getPiece(x, y) != null) {
             return true;
         }
 
-        grid.getCell(x, y).setSelectedCell(cell);
+        Cell cell = grid.getCell(x, y);
+
+        if (cell == null) {
+            return true;
+        }
+
+        cell.setSelectedCell(val);
 
         return false;
     }

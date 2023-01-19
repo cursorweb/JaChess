@@ -9,54 +9,30 @@ public class Rook extends BasePiece {
 
     @Override
     public void changePieces(Cell cell, Cell val) {
-        /*
-        switch (type) {
-            case Rook:
-                for (int pieceY = y; pieceY < 8; pieceY++) {
-                    if (noMove(x, pieceY)) {
-                        break;
-                    }
-                }
+        int x = cell.cellX(), y = cell.cellY();
 
-                for (int pieceY = y; pieceY >= 0; pieceY--) {
-                    if (noMove(x, pieceY)) {
-                        break;
-                    }
-                }
-
-                for (int pieceX = x; pieceX < 8; pieceX++) {
-                    if (noMove(pieceX, y)) {
-                        break;
-                    }
-                }
-
-                for (int pieceX = x; pieceX >= 0; pieceX--) {
-                    if (noMove(pieceX, y)) {
-                        break;
-                    }
-                }
+        for (int pieceY = y + 1; pieceY < 8; pieceY++) {
+            if (noMove(x, pieceY, val)) {
                 break;
-
-            case Bishop: {
-                loop:
-                for (int pieceY = y; pieceY >= 0; pieceY--) {
-                    for (int pieceX = x; pieceX >= 0; pieceX--) {
-                        if (noMove(pieceX, pieceY)) {
-                            break loop;
-                        }
-                    }
-                }
-
-                loop:
-                for (int pieceY = y; pieceY < 8; pieceY++) {
-                    for (int pieceX = x; pieceX >= 0; pieceX--) {
-                        if (noMove(pieceX, pieceY)) {
-                            break loop;
-                        }
-                    }
-                }
-            } break;
+            }
         }
-        */
+
+        for (int pieceY = y - 1; pieceY >= 0; pieceY--) {
+            if (noMove(x, pieceY, val)) {
+                break;
+            }
+        }
+
+        for (int pieceX = x + 1; pieceX < 8; pieceX++) {
+            if (noMove(pieceX, y, val)) {
+                break;
+            }
+        }
+
+        for (int pieceX = x - 1; pieceX >= 0; pieceX--) {
+            if (noMove(pieceX, y, val)) {
+                break;
+            }
+        }
     }
 }
