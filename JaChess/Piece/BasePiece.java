@@ -91,22 +91,27 @@ public abstract class BasePiece {
     }
 
     /** VIEW MOVES + UTIL */
-    public void showMoves(int x, int y) {
-        showPieceMoves(x, y);
+    public void showMoves(Cell cell) {
+        changePieces(cell, cell);
+    }
+    public void hideMoves(Cell cell) {
+        changePieces(cell, null);
     }
 
-    protected abstract void showPieceMoves(int x, int y);
+    protected abstract void changePieces(Cell cell, Cell val);
 
-    protected boolean noMove(int x, int y) {
+    protected boolean noMove(Cell cell) {
+        int x = cell.cellX(), y = cell.cellY();
+
         if (grid.getPiece(x, y) != null) {
             return true;
         }
 
-        grid.getCell(x, y).setCircle(true);
+        grid.getCell(x, y).setSelectedCell(cell);
 
         return false;
     }
 
     /** MOVED */
-    protected void pieceMoved() {}
+    public void pieceMoved() {}
 }

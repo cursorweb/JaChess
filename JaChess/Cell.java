@@ -8,7 +8,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class Cell extends JComponent {
-    /** CONFIG */
+    /**
+     * CONFIG
+     */
     public static final int SIZE = 18 * Main.SCALE;
 
     private static final Color darkColor = new Color(0, 132, 214);
@@ -17,16 +19,25 @@ public class Cell extends JComponent {
     private static final Color lightColorH = new Color(144, 177, 215);
 
 
-    /** Locational */
+    /**
+     * Locational
+     */
+    private static Cell selectedPiece = null; // the piece about to be 'moved'
     private BasePiece piece;
     private final int x;
     private final int y;
 
-    /** Design */
+
+    /**
+     * Design
+     */
     private Color color;
 
     private final boolean dark;
-    private boolean circle = false;
+
+    // where the actual piece is
+    private Cell selectedCell = null;
+
 
     public Cell(int x, int y) {
         this.piece = null;
@@ -55,22 +66,35 @@ public class Cell extends JComponent {
             piece.draw(((Graphics2D) g));
         }
 
-        if (circle) {
+        if (selectedCell != null) {
             g.setColor(new Color(0, 0, 0, 0.5f));
             g.fillArc(SIZE / 2 - SIZE / 6, SIZE / 2 - SIZE / 6, SIZE / 3, SIZE / 3, 0, 360);
         }
     }
 
+
     public void setPiece(BasePiece piece) {
         this.piece = piece;
+        repaint();
     }
 
     public BasePiece getPiece() {
         return piece;
     }
 
-    public void setCircle(boolean circle) {
-        this.circle = circle;
+
+    public void setSelectedCell(Cell selectedCell) {
+        if (selectedPiece == null) {
+            selectedPiece = selectedCell;
+        }
+
+        this.selectedCell = selectedCell;
+        repaint();
+    }
+    private void clear() {
+        if (selectedPiece != null) {
+            selectedPiece.getPiece().hideMoves(selectedPiece);
+        }
     }
 
     private class MouseHover implements MouseListener {
@@ -82,10 +106,24 @@ public class Cell extends JComponent {
         @Override
         public void mousePressed(MouseEvent e) {
             if (piece == null) {
-                return;
-            }
+                if (selectedCell != null) {
+                    clear();
 
-            piece.showMoves(x, y);
+                    piece = selectedCell.getPiece();
+                    selectedCell.setPiece(null);
+                    selectedPiece = null;
+
+                    setPiece(piece);
+                    repaint();
+                }
+            } else {
+                // case 2: user is trying to select a piece
+                clear();
+
+                selectedPiece = Cell.this;
+                piece.showMoves(Cell.this);
+                repaint();
+            }
         }
 
         @Override
@@ -95,6 +133,7 @@ public class Cell extends JComponent {
 
         @Override
         public void mouseEntered(MouseEvent e) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             if (dark) {
                 color = darkColorH;
             } else {
@@ -114,5 +153,14 @@ public class Cell extends JComponent {
 
             repaint();
         }
+    }
+
+
+    public int cellX() {
+        return x;
+    }
+
+    public int cellY() {
+        return y;
     }
 }

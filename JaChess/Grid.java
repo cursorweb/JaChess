@@ -28,14 +28,6 @@ public class Grid extends JPanel {
         }
     }
 
-    public void clearCircles() {
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                grid[y][x].setCircle(false);
-            }
-        }
-    }
-
     private void makePieces(BasePiece.Side side) {
         int pawnY, pieceY;
 

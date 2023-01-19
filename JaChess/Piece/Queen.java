@@ -1,12 +1,14 @@
 package JaChess.Piece;
 
+import JaChess.Cell;
+
 public class Queen extends BasePiece {
     public Queen(Side side) {
         super(Type.Queen, side);
     }
 
     @Override
-    protected void showPieceMoves(int x, int y) {
+    public void changePieces(Cell cell, Cell val) {
 
     }
 }
