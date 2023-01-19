@@ -98,6 +98,10 @@ public abstract class BasePiece {
         changePieces(cell, null);
     }
 
+    public Side getSide() {
+        return side;
+    }
+
     protected abstract void changePieces(Cell cell, Cell val);
 
     protected boolean noMove(Cell cell) {

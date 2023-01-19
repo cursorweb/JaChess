@@ -11,14 +11,21 @@ public class Pawn extends BasePiece {
 
     @Override
     public void changePieces(Cell cell, Cell val) {
-        int x = cell.cellX(), y = cell.cellY();
+        if (side == Side.White) {
+            int x = cell.cellX(), y = cell.cellY();
 
-        if (grid.getPiece(x, y - 1) == null) {
-            grid.getCell(x, y - 1).setSelectedCell(val);
-        }
+            if (grid.getPiece(x, y - 1) == null) {
+                grid.getCell(x, y - 1).setSelectedCell(val);
+            }
 
-        if (doubleMove && grid.getPiece(x, y - 2) == null) {
-            grid.getCell(x, y - 2).setSelectedCell(val);
+            if (doubleMove && grid.getPiece(x, y - 2) == null) {
+                grid.getCell(x, y - 2).setSelectedCell(val);
+            }
         }
+    }
+
+    @Override
+    public void pieceMoved() {
+        doubleMove = false;
     }
 }

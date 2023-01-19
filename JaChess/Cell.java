@@ -22,10 +22,11 @@ public class Cell extends JComponent {
     /**
      * Locational
      */
-    private static Cell selectedPiece = null; // the piece about to be 'moved'
+    private static Cell selectedCell = null; // the piece about to be 'moved'
     private BasePiece piece;
     private final int x;
     private final int y;
+    private static Grid grid = null;
 
 
     /**
@@ -36,10 +37,14 @@ public class Cell extends JComponent {
     private final boolean dark;
 
     // where the actual piece is
-    private Cell selectedCell = null;
+    private boolean isSelected = false;
 
 
-    public Cell(int x, int y) {
+    public Cell(Grid grid, int x, int y) {
+        if (Cell.grid == null) {
+            Cell.grid = grid;
+        }
+
         this.piece = null;
         this.x = x;
         this.y = y;
@@ -66,7 +71,7 @@ public class Cell extends JComponent {
             piece.draw(((Graphics2D) g));
         }
 
-        if (selectedCell != null) {
+        if (isSelected) {
             g.setColor(new Color(0, 0, 0, 0.5f));
             g.fillArc(SIZE / 2 - SIZE / 6, SIZE / 2 - SIZE / 6, SIZE / 3, SIZE / 3, 0, 360);
         }
@@ -83,52 +88,62 @@ public class Cell extends JComponent {
     }
 
 
+    /**
+     * Sets the chosen piece, and marks this current cell as a valid move
+     * @param selectedCell the cell
+     */
     public void setSelectedCell(Cell selectedCell) {
-        if (selectedPiece == null) {
-            selectedPiece = selectedCell;
+        if (Cell.selectedCell == null) {
+            Cell.selectedCell = selectedCell;
         }
 
-        this.selectedCell = selectedCell;
+        // if it is null, this is how to remove
+        isSelected = selectedCell != null;
         repaint();
     }
-    private void clear() {
-        if (selectedPiece != null) {
-            selectedPiece.getPiece().hideMoves(selectedPiece);
+    private void clearMoves() {
+        if (selectedCell != null) {
+            selectedCell.getPiece().hideMoves(selectedCell);
         }
     }
 
     private class MouseHover implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
-            mousePressed(e);
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
             if (piece == null) {
-                if (selectedCell != null) {
+                if (isSelected) {
+                    clearMoves();
+
                     piece = selectedCell.getPiece();
 
-                    clear();
                     selectedCell.setPiece(null);
-                    selectedPiece = null;
+                    selectedCell = null;
 
                     setPiece(piece);
+                    piece.pieceMoved();
+
+                    Main.changeTurn();
                     repaint();
                 }
             } else {
-                // case 2: user is trying to select a piece
-                clear();
+                if (piece.getSide() == Main.getTurn()) {
+                    // case 2: user is trying to select a piece
+                    clearMoves();
 
-                selectedPiece = Cell.this;
-                piece.showMoves(Cell.this);
-                repaint();
+                    selectedCell = Cell.this;
+                    piece.showMoves(Cell.this);
+                }
             }
         }
 
         @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
         public void mouseReleased(MouseEvent e) {
-            mousePressed(e);
+
         }
 
         @Override

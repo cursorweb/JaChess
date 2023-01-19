@@ -22,6 +22,10 @@ public class Main {
         }
     }
 
+    public static BasePiece.Side getTurn() {
+        return turn;
+    }
+
     private static void setup() {
         panel.setBackground(new Color(0, 0, 0));
         panel.add(grid);

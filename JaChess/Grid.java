@@ -22,7 +22,7 @@ public class Grid extends JPanel {
     private void makeGrid() {
         for (int y = 0; y < 8; y++) { // 1-8
             for (int x = 0; x < 8; x++) { // a-z
-                grid[y][x] = new Cell(x, y);
+                grid[y][x] = new Cell(this, x, y);
                 add(grid[y][x]);
             }
         }
