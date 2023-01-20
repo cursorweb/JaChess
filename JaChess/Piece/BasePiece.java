@@ -105,11 +105,17 @@ public abstract class BasePiece {
     protected abstract void changePieces(Cell cell, Cell val);
 
     protected boolean noMove(int x, int y, Cell val) {
-        if (grid.getPiece(x, y) != null) {
+        BasePiece piece = grid.getPiece(x, y);
+        Cell cell = grid.getCell(x, y);
+
+        if (piece != null) {
+            if (piece.getSide() != side) {
+                cell.setSelectedCell(val);
+            }
+
             return true;
         }
 
-        Cell cell = grid.getCell(x, y);
 
         if (cell == null) {
             return true;
@@ -118,6 +124,28 @@ public abstract class BasePiece {
         cell.setSelectedCell(val);
 
         return false;
+    }
+
+    protected void captureEnemyPiece(int x, int y, Cell val) {
+        if (isEnemyPiece(x, y)) {
+            grid.getCell(x, y).setSelectedCell(val);
+        }
+    }
+
+    protected boolean isEnemyPiece(int x, int y) {
+        Cell cell = grid.getCell(x, y);
+        System.out.println(cell);
+        if (cell == null) {
+            return false;
+        }
+
+        if (cell.getPiece() == null) {
+            return false;
+        }
+
+        System.out.println(cell.getPiece());
+
+        return cell.getPiece().getSide() == side;
     }
 
     /** MOVED */

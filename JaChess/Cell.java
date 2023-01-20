@@ -120,30 +120,29 @@ public class Cell extends JComponent {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if (piece == null) {
-                if (isSelected) {
-                    clearMoves();
+                if (!isSelected && piece != null) {
+                    if (piece.getSide() == Main.getTurn()) {
+                        // case 2: user is trying to select a piece
+                        clearMoves();
 
-                    piece = selectedCell.getPiece();
+                        selectedCell = Cell.this;
+                        piece.showMoves(Cell.this);
+                    }
+                } else {
+                        System.out.println(x + ", " + y);
+                        clearMoves();
 
-                    selectedCell.setPiece(null);
-                    selectedCell = null;
+                        piece = selectedCell.getPiece();
 
-                    setPiece(piece);
-                    piece.pieceMoved();
+                        selectedCell.setPiece(null);
+                        selectedCell = null;
 
-                    Main.changeTurn();
-                    repaint();
+                        setPiece(piece);
+                        piece.pieceMoved();
+
+                        Main.changeTurn();
+                        repaint();
                 }
-            } else {
-                if (piece.getSide() == Main.getTurn()) {
-                    // case 2: user is trying to select a piece
-                    clearMoves();
-
-                    selectedCell = Cell.this;
-                    piece.showMoves(Cell.this);
-                }
-            }
         }
 
         @Override

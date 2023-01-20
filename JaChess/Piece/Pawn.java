@@ -21,6 +21,9 @@ public class Pawn extends BasePiece {
             if (doubleMove && grid.getPiece(x, y - 2) == null) {
                 grid.getCell(x, y - 2).setSelectedCell(val);
             }
+
+            captureEnemyPiece(x - 1, y - 1, val);
+            captureEnemyPiece(x + 1, y - 1, val);
         } else {
             int x = cell.cellX(), y = cell.cellY();
 
@@ -31,6 +34,9 @@ public class Pawn extends BasePiece {
             if (doubleMove && grid.getPiece(x, y + 2) == null) {
                 grid.getCell(x, y + 2).setSelectedCell(val);
             }
+
+            captureEnemyPiece(x - 1, y + 1, val);
+            captureEnemyPiece(x + 1, y + 1, val);
         }
     }
 
