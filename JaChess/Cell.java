@@ -110,6 +110,16 @@ public class Cell extends JComponent {
     private class MouseHover implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
             if (piece == null) {
                 if (isSelected) {
                     clearMoves();
@@ -134,16 +144,6 @@ public class Cell extends JComponent {
                     piece.showMoves(Cell.this);
                 }
             }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
         }
 
         @Override
